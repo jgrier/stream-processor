@@ -11,6 +11,10 @@ import java.util.List;
 /**
  * Restate service that ingests source records, applies pre-keyBy stateless operators,
  * and routes results to the keyed stage or directly to the sink stage.
+ *
+ * For unbounded sources, uses token circulation for backpressure:
+ * each ingest() invocation processes one record and the token is returned
+ * by the sink calling ingest() again after writing.
  */
 @Service
 public class SourceOperatorService {
@@ -20,20 +24,38 @@ public class SourceOperatorService {
     static boolean hasKeyedStage;
 
     /**
-     * Called once to read all records from the source and push them into the pipeline.
-     * Each record is sent to the process handler via durable one-way send.
+     * For bounded sources: reads all records and sends them to process().
+     * For unbounded sources: reads ONE record (token model). The token
+     * is returned by SinkOperatorService calling ingest() after writing.
      */
     @Handler
     public void ingest(Context ctx) throws Exception {
-        source.open();
-        try {
-            Object record;
-            while ((record = source.next()) != null) {
-                String json = RecordEnvelope.wrap(record);
-                ctx.send(SourceOperatorServiceHandlers.process(json));
+        if (source.isBounded()) {
+            source.open();
+            try {
+                Object record;
+                while ((record = source.next()) != null) {
+                    ctx.send(SourceOperatorServiceHandlers.process(RecordEnvelope.wrap(record)));
+                }
+            } finally {
+                source.close();
             }
-        } finally {
-            source.close();
+        } else {
+            Object record = source.next();
+            if (record != null) {
+                ctx.send(SourceOperatorServiceHandlers.process(RecordEnvelope.wrap(record)));
+            }
+        }
+    }
+
+    /**
+     * Injects additional tokens into the system at runtime.
+     * Each token becomes an ingest() invocation.
+     */
+    @Handler
+    public void addTokens(Context ctx, int count) {
+        for (int i = 0; i < count; i++) {
+            ctx.send(SourceOperatorServiceHandlers.ingest());
         }
     }
 

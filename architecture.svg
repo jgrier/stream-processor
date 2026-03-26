@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6" fill="#00d4ff"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6" fill="#00e676"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6" fill="#ff9800"/>
+    </marker>
+    <marker id="arrow-pink" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6" fill="#ff4081"/>
+    </marker>
+    <linearGradient id="restate-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e2a4a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-strong">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="620" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="550" y="40" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="22" fill="#00d4ff" font-weight="bold" letter-spacing="2">STREAM PROCESSOR ON RESTATE</text>
+  <text x="550" y="62" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#8888aa">Token Circulation Backpressure · Durable Execution · Per-Key State</text>
+
+  <!-- Restate Runtime Background -->
+  <rect x="30" y="100" width="1040" height="400" rx="16" fill="url(#restate-bg)" stroke="#2a3a6a" stroke-width="2"/>
+  <text x="550" y="135" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="14" fill="#4a5a8a" letter-spacing="3">RESTATE DURABLE EXECUTION RUNTIME</text>
+
+  <!-- Source Box -->
+  <rect x="60" y="200" width="180" height="120" rx="12" fill="#1a2744" stroke="#00d4ff" stroke-width="2"/>
+  <text x="150" y="235" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#00d4ff" font-weight="bold">SourceOperator</text>
+  <text x="150" y="255" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#00d4ff" font-weight="bold">Service</text>
+  <text x="150" y="280" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#6688aa">@Service</text>
+  <line x1="80" y1="290" x2="220" y2="290" stroke="#2a3a5a" stroke-width="1"/>
+  <text x="150" y="308" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#88aacc">ingest() → process()</text>
+
+  <!-- Source icon -->
+  <circle cx="80" cy="185" r="16" fill="#0a1a2e" stroke="#00d4ff" stroke-width="1.5"/>
+  <text x="80" y="190" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="14" fill="#00d4ff">S</text>
+  <text x="80" y="170" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#4488aa">Source</text>
+
+  <!-- Pre-keyBy ops inside source -->
+  <rect x="75" y="325" width="150" height="28" rx="6" fill="#0d1f3c" stroke="#4488aa" stroke-width="1"/>
+  <text x="150" y="344" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#66aacc">map(word → WC(word,1))</text>
+
+  <!-- Arrow Source → Keyed -->
+  <line x1="240" y1="260" x2="370" y2="260" stroke="#00d4ff" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="305" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#4488aa">ctx.send()</text>
+
+  <!-- Keyed Box -->
+  <rect x="380" y="180" width="260" height="160" rx="12" fill="#1a2744" stroke="#ff9800" stroke-width="2"/>
+  <text x="510" y="215" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#ff9800" font-weight="bold">KeyedOperatorService</text>
+  <text x="510" y="240" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#bb7700">@VirtualObject</text>
+
+  <!-- Per-key state boxes -->
+  <rect x="400" y="255" width="100" height="36" rx="6" fill="#2a1a00" stroke="#ff9800" stroke-width="1"/>
+  <text x="450" y="270" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#ffb74d">key="hello"</text>
+  <text x="450" y="283" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#ff9800">count: 42</text>
+
+  <rect x="520" y="255" width="100" height="36" rx="6" fill="#2a1a00" stroke="#ff9800" stroke-width="1"/>
+  <text x="570" y="270" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#ffb74d">key="restate"</text>
+  <text x="570" y="283" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#ff9800">count: 37</text>
+
+  <rect x="400" y="298" width="220" height="28" rx="6" fill="#0d1f3c" stroke="#bb7700" stroke-width="1"/>
+  <text x="510" y="317" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#ffb74d">reduce((a,b) → WC(w, a+b))</text>
+
+  <!-- Arrow Keyed → Sink -->
+  <line x1="640" y1="260" x2="770" y2="260" stroke="#ff9800" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="705" y="250" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#bb7700">ctx.send()</text>
+
+  <!-- Sink Box -->
+  <rect x="780" y="200" width="180" height="120" rx="12" fill="#1a2744" stroke="#00e676" stroke-width="2"/>
+  <text x="870" y="235" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#00e676" font-weight="bold">SinkOperator</text>
+  <text x="870" y="255" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#00e676" font-weight="bold">Service</text>
+  <text x="870" y="280" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#4a8866">@Service</text>
+  <line x1="800" y1="290" x2="940" y2="290" stroke="#2a3a5a" stroke-width="1"/>
+  <text x="870" y="308" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#66cc88">sink.write(record)</text>
+
+  <!-- Output icon -->
+  <rect x="985" y="235" width="50" height="50" rx="8" fill="#0a1a2e" stroke="#00e676" stroke-width="1.5"/>
+  <text x="1010" y="257" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#00e676">FILE</text>
+  <line x1="960" y1="260" x2="982" y2="260" stroke="#00e676" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+  <!-- TOKEN CIRCULATION -->
+  <path d="M 870 320 L 870 430 C 870 460, 830 470, 550 470 C 270 470, 150 460, 150 430 L 150 320"
+        fill="none" stroke="#ff4081" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arrow-pink)" filter="url(#glow)"/>
+
+  <!-- Token label on the return path -->
+  <rect x="430" y="448" width="240" height="30" rx="8" fill="#2a0a1a" stroke="#ff4081" stroke-width="1.5"/>
+  <text x="550" y="468" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="12" fill="#ff4081" font-weight="bold">TOKEN RETURN: ingest()</text>
+
+  <!-- Token dots animated along the path -->
+  <circle r="5" fill="#ff4081" filter="url(#glow-strong)">
+    <animateMotion dur="3s" repeatCount="indefinite"
+      path="M 870 320 L 870 430 C 870 460, 830 470, 550 470 C 270 470, 150 460, 150 430 L 150 320"/>
+  </circle>
+  <circle r="5" fill="#ff4081" filter="url(#glow-strong)">
+    <animateMotion dur="3s" repeatCount="indefinite" begin="0.5s"
+      path="M 870 320 L 870 430 C 870 460, 830 470, 550 470 C 270 470, 150 460, 150 430 L 150 320"/>
+  </circle>
+  <circle r="5" fill="#ff4081" filter="url(#glow-strong)">
+    <animateMotion dur="3s" repeatCount="indefinite" begin="1s"
+      path="M 870 320 L 870 430 C 870 460, 830 470, 550 470 C 270 470, 150 460, 150 430 L 150 320"/>
+  </circle>
+  <circle r="5" fill="#ff4081" filter="url(#glow-strong)">
+    <animateMotion dur="3s" repeatCount="indefinite" begin="1.5s"
+      path="M 870 320 L 870 430 C 870 460, 830 470, 550 470 C 270 470, 150 460, 150 430 L 150 320"/>
+  </circle>
+  <circle r="5" fill="#ff4081" filter="url(#glow-strong)">
+    <animateMotion dur="3s" repeatCount="indefinite" begin="2s"
+      path="M 870 320 L 870 430 C 870 460, 830 470, 550 470 C 270 470, 150 460, 150 430 L 150 320"/>
+  </circle>
+
+  <!-- Forward path dots -->
+  <circle r="4" fill="#00d4ff" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite"
+      path="M 240 260 L 370 260"/>
+  </circle>
+  <circle r="4" fill="#ff9800" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite"
+      path="M 640 260 L 770 260"/>
+  </circle>
+
+  <!-- addTokens injection point -->
+  <rect x="55" y="400" width="190" height="55" rx="10" fill="#2a0a1a" stroke="#ff4081" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="150" y="420" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#ff4081">curl POST /addTokens</text>
+  <text x="150" y="438" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="10" fill="#ff4081">→ injects N new tokens</text>
+  <text x="150" y="450" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="8" fill="#aa3060">(grow-only at runtime)</text>
+  <line x1="150" y1="400" x2="150" y2="375" stroke="#ff4081" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow-pink)"/>
+
+  <!-- Performance stats -->
+  <rect x="700" y="380" width="360" height="100" rx="10" fill="#0d1520" stroke="#333355" stroke-width="1"/>
+  <text x="880" y="402" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#666688">MEASURED PERFORMANCE (local)</text>
+  <text x="720" y="422" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#00e676">Peak throughput:  ~3,400 records/sec</text>
+  <text x="720" y="440" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#00d4ff">Saturation point: ~13 tokens</text>
+  <text x="720" y="458" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#ff9800">Per-hop latency:  ~1ms (durable!)</text>
+  <text x="720" y="474" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#ff4081">Hops per record:  4</text>
+
+  <!-- Hop labels -->
+  <text x="150" y="168" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#335577">HOP 1: ingest</text>
+  <text x="150" y="158" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#335577">HOP 2: process</text>
+  <text x="510" y="175" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#664400">HOP 3: keyed process</text>
+  <text x="870" y="195" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="9" fill="#336633">HOP 4: sink process</text>
+
+  <!-- Bottom explanations -->
+  <text x="550" y="550" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#8888aa">
+    Each pink dot is a token. N tokens = N records in flight. No central controller.
+  </text>
+  <text x="550" y="570" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="13" fill="#8888aa">
+    Sink returns the token → Source reads next record. Backpressure is structural.
+  </text>
+  <text x="550" y="600" text-anchor="middle" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#555577">
+    Every arrow is a durable ctx.send() — survives crashes, exactly-once delivery guaranteed by Restate.
+  </text>
+
+  <!-- Legend -->
+  <rect x="170" y="510" width="16" height="16" rx="3" fill="#00d4ff"/>
+  <text x="192" y="523" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#aaa">Source (@Service)</text>
+  <rect x="370" y="510" width="16" height="16" rx="3" fill="#ff9800"/>
+  <text x="392" y="523" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#aaa">Keyed (@VirtualObject)</text>
+  <rect x="600" y="510" width="16" height="16" rx="3" fill="#00e676"/>
+  <text x="622" y="523" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#aaa">Sink (@Service)</text>
+  <rect x="790" y="510" width="16" height="16" rx="3" fill="#ff4081"/>
+  <text x="812" y="523" font-family="SF Mono, Fira Code, Consolas, monospace" font-size="11" fill="#aaa">Token circulation</text>
+</svg>

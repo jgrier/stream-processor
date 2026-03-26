@@ -29,17 +29,20 @@ public class PipelineDeployer {
             throw new IllegalStateException("No sources defined in pipeline");
         }
 
-        // For the demo, we support a single pipeline (first source)
         PipelinePlan plan = PipelineCompiler.compile(sources.get(0));
+        boolean unbounded = !plan.getSource().isBounded();
 
-        // Configure the services with the pipeline plan
         configureSources(plan);
         configureKeyed(plan);
-        configureSink(plan);
+        configureSink(plan, unbounded);
+
+        // Open the source once for unbounded sources
+        if (unbounded) {
+            plan.getSource().open();
+        }
 
         System.out.println("[" + jobName + "] Starting Restate endpoint on port " + port + "...");
 
-        // Build and start the Restate endpoint
         Endpoint.Builder builder = Endpoint.builder();
         builder.bind(new SourceOperatorService());
         if (plan.hasKeyBy()) {
@@ -52,12 +55,20 @@ public class PipelineDeployer {
         System.out.println("[" + jobName + "] Restate endpoint started on port " + port);
         System.out.println("[" + jobName + "] Register this deployment with Restate:");
         System.out.println("  restate deployments register http://localhost:" + port);
-        System.out.println("[" + jobName + "] Then trigger source ingestion:");
-        System.out.println("  curl -X POST http://localhost:8080/SourceOperatorService/ingest");
+
+        if (unbounded) {
+            System.out.println("[" + jobName + "] Then start the stream with N tokens (N = max records in flight):");
+            System.out.println("  curl -X POST http://localhost:8080/SourceOperatorService/addTokens -H 'content-type: application/json' -d '10'");
+            System.out.println("[" + jobName + "] To increase throughput at runtime, add more tokens:");
+            System.out.println("  curl -X POST http://localhost:8080/SourceOperatorService/addTokens -H 'content-type: application/json' -d '5'");
+        } else {
+            System.out.println("[" + jobName + "] Then trigger source ingestion:");
+            System.out.println("  curl -X POST http://localhost:8080/SourceOperatorService/ingest");
+        }
+
         System.out.println();
         System.out.println("[" + jobName + "] Waiting for deployment registration...");
 
-        // Keep the server running
         Thread.currentThread().join();
     }
 
@@ -77,7 +88,8 @@ public class PipelineDeployer {
     }
 
     @SuppressWarnings("unchecked")
-    private void configureSink(PipelinePlan plan) {
+    private void configureSink(PipelinePlan plan, boolean unbounded) {
         SinkOperatorService.sink = (Sink<Object>) plan.getSink();
+        SinkOperatorService.unboundedSource = unbounded;
     }
 }

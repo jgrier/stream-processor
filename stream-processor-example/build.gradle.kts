@@ -13,3 +13,8 @@ dependencies {
 application {
     mainClass.set("dev.streamprocessor.example.WordCountExample")
 }
+
+tasks.register<JavaExec>("runContinuous") {
+    mainClass.set("dev.streamprocessor.example.ContinuousWordCountExample")
+    classpath = sourceSets["main"].runtimeClasspath
+}
