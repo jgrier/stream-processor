@@ -3,6 +3,7 @@ package dev.streamprocessor.internal;
 import dev.restate.sdk.Context;
 import dev.restate.sdk.annotation.Handler;
 import dev.restate.sdk.annotation.Service;
+import dev.restate.sdk.JsonSerdes;
 import dev.streamprocessor.api.functions.KeySelector;
 import dev.streamprocessor.api.source.Source;
 
@@ -41,9 +42,16 @@ public class SourceOperatorService {
                 source.close();
             }
         } else {
-            Object record = source.next();
-            if (record != null) {
-                ctx.send(SourceOperatorServiceHandlers.process(RecordEnvelope.wrap(record)));
+            String json = ctx.run(JsonSerdes.STRING, () -> {
+                try {
+                    Object record = source.next();
+                    return record != null ? RecordEnvelope.wrap(record) : null;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            if (json != null) {
+                ctx.send(SourceOperatorServiceHandlers.process(json));
             }
         }
     }

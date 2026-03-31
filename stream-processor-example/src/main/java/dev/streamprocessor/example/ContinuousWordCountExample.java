@@ -4,6 +4,8 @@ import dev.streamprocessor.api.StreamExecutionEnvironment;
 import dev.streamprocessor.api.sink.FileSink;
 import dev.streamprocessor.api.source.RandomWordSource;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class ContinuousWordCountExample {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
